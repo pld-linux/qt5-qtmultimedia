@@ -1,33 +1,40 @@
-# TODO:
-# - cleanup
 #
 # Conditional build:
 %bcond_without	qch	# documentation in QCH format
 
 %define		orgname		qtmultimedia
-%define		qtbase_ver	%{version}
-%define		qttools_ver	%{version}
+%define		qtbase_ver		%{version}
+%define		qtdeclarative_ver	%{version}
+%define		qttools_ver		%{version}
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
-Version:	5.2.0
-Release:	0.1
-License:	LGPL v2.1 or GPL v3.0
+Version:	5.3.0
+Release:	1
+License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		X11/Libraries
-Source0:	http://download.qt-project.org/official_releases/qt/5.2/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
-# Source0-md5:	2d0f9403f607f617bcc13d4814f41365
+Source0:	http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
+# Source0-md5:	921f4596ca39b78851663369db0bbcee
 URL:		http://qt-project.org/
 BuildRequires:	OpenAL-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Gui-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
+BuildRequires:	Qt5OpenGL-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5Widgets-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Xml-devel >= %{qtbase_ver}
 BuildRequires:	alsa-lib-devel
-BuildRequires:	gstreamer-devel
+BuildRequires:	gstreamer0.10-devel >= 0.10
+BuildRequires:	gstreamer0.10-plugins-base-devel >= 0.10
 BuildRequires:	pulseaudio-devel
 %if %{with qch}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
 %endif
 BuildRequires:	qt5-build >= %{qtbase_ver}
 BuildRequires:	qt5-qmake >= %{qtbase_ver}
-BuildRequires:	qt5-qtbase-devel >= %{qtbase_ver}
-BuildRequires:	qt5-qttools-devel >= %{qttools_ver}
 BuildRequires:	rpmbuild(macros) >= 1.654
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -52,25 +59,38 @@ systemach biurkowych, przenośnych i wbudowanych bez przepisywania kodu
 Ten pakiet zawiera biblioteki Qt5 Multimedia.
 
 %package -n Qt5Multimedia
-Summary:	The Qt5 Multimedia library
-Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia
+Summary:	The Qt5 Multimedia libraries
+Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Group:		X11/Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
+Requires:	Qt5Gui >= %{qtbase_ver}
+Requires:	Qt5Network >= %{qtbase_ver}
+Requires:	Qt5OpenGL >= %{qtbase_ver}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
+Requires:	Qt5Quick >= %{qtdeclarative_ver}
+Requires:	Qt5Widgets >= %{qtbase_ver}
 Obsoletes:	qt5-qtmultimedia
 
 %description -n Qt5Multimedia
-Qt5 Multimedia library provides (TODO: ...).
+Qt5 Multimedia libraries provide audio, video, radio and camera
+functionality.
 
 %description -n Qt5Multimedia -l pl.UTF_8
-Biblioteka Qt5 Multimedia dostarcza (TODO: ...).
+Biblioteki Qt5 Multimedia dostarczają funkcjonalność związaną z
+dźwiękiem, obrazem, radiem i kamerą.
 
 %package -n Qt5Multimedia-devel
 Summary:	Qt5 Multimedia libraries - development files
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia - pliki programistyczne
 Group:		X11/Development/Libraries
+Requires:	OpenGL-devel
 Requires:	Qt5Core-devel >= %{qtbase_ver}
+Requires:	Qt5Gui-devel >= %{qtbase_ver}
+Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Multimedia = %{version}-%{release}
+Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
+Requires:	Qt5Widgets-devel >= %{qtbase_ver}
+Requires:	pulseaudio-devel
 Obsoletes:	qt5-qtmultimedia-devel
 
 %description -n Qt5Multimedia-devel
@@ -139,17 +159,20 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install_%{!?with_qch:html_}docs \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
+# kill unnecessary -L%{_libdir} from *.la, *.prl, *.pc
+%{__sed} -i -e "s,-L%{_libdir} \?,,g" \
+	$RPM_BUILD_ROOT%{_libdir}/*.{la,prl} \
+	$RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
+
 # useless symlinks
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.so.5.?
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libqgsttools_p.so.1.?
 # actually drop *.la, follow policy of not packaging them when *.pc exist
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.la
 
 # Prepare some files list
 ifecho() {
-	RESULT=`echo $RPM_BUILD_ROOT$2 2>/dev/null`
-	[ "$RESULT" == "" ] && return # XXX this is never true due $RPM_BUILD_ROOT being set
-	r=`echo $RESULT | awk '{ print $1 }'`
-
+	r="$RPM_BUILD_ROOT$2"
 	if [ -d "$r" ]; then
 		echo "%%dir $2" >> $1.files
 	elif [ -x "$r" ] ; then
@@ -162,12 +185,16 @@ ifecho() {
 		return 1
 	fi
 }
+ifecho_tree() {
+	ifecho $1 $2
+	for f in `find $RPM_BUILD_ROOT$2 -printf "%%P "`; do
+		ifecho $1 $2/$f
+	done
+}
 
 echo "%defattr(644,root,root,755)" > examples.files
-ifecho examples %{_examplesdir}/qt5
-for f in `find $RPM_BUILD_ROOT%{_examplesdir}/qt5 -printf "%%P "`; do
-	ifecho examples %{_examplesdir}/qt5/$f
-done
+ifecho_tree examples %{_examplesdir}/qt5/multimedia
+ifecho_tree examples %{_examplesdir}/qt5/multimediawidgets
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -184,9 +211,33 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaWidgets.so.5
 %attr(755,root,root) %{_libdir}/libqgsttools_p.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqgsttools_p.so.?
-%attr(755,root,root) %{qt5dir}/plugins/*
-%{qt5dir}/qml/*
+%attr(755,root,root) %ghost %{_libdir}/libqgsttools_p.so.1
+%dir %{qt5dir}/plugins/audio
+# R: Qt5Core Qt5Multimedia pulseaudio-libs
+%attr(755,root,root) %{qt5dir}/plugins/audio/libqtmedia_pulse.so
+%dir %{qt5dir}/plugins/mediaservice
+# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstaudiodecoder.so
+# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstcamerabin.so
+# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediacapture.so
+# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediaplayer.so
+%dir %{qt5dir}/plugins/playlistformats
+# R: Qt5Core Qt5Multimedia
+%attr(755,root,root) %{qt5dir}/plugins/playlistformats/libqtmultimedia_m3u.so
+%dir %{qt5dir}/qml/QtAudioEngine
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5Qml OpenAL
+%attr(755,root,root) %{qt5dir}/qml/QtAudioEngine/libdeclarative_audioengine.so
+%{qt5dir}/qml/QtAudioEngine/plugins.qmltypes
+%{qt5dir}/qml/QtAudioEngine/qmldir
+%dir %{qt5dir}/qml/QtMultimedia
+# R: Qt5Core Qt5Gui Qt5Multimedia[+libQt5MultimediaQuick_p] Qt5Qml Qt5Quick
+%attr(755,root,root) %{qt5dir}/qml/QtMultimedia/libdeclarative_multimedia.so
+%{qt5dir}/qml/QtMultimedia/Video.qml
+%{qt5dir}/qml/QtMultimedia/plugins.qmltypes
+%{qt5dir}/qml/QtMultimedia/qmldir
 
 %files -n Qt5Multimedia-devel
 %defattr(644,root,root,755)
@@ -206,16 +257,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/Qt5MultimediaWidgets.pc
 %{_libdir}/cmake/Qt5Multimedia
 %{_libdir}/cmake/Qt5MultimediaWidgets
-%{qt5dir}/mkspecs/modules/*.pri
+%{qt5dir}/mkspecs/modules/qt_lib_multimedia.pri
+%{qt5dir}/mkspecs/modules/qt_lib_multimedia_private.pri
+%{qt5dir}/mkspecs/modules/qt_lib_multimediawidgets.pri
+%{qt5dir}/mkspecs/modules/qt_lib_multimediawidgets_private.pri
+%{qt5dir}/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri
 
 %files doc
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtmultimedia
+%{_docdir}/qt5-doc/qtmultimediawidgets
 
 %if %{with qch}
 %files doc-qch
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtmultimedia.qch
+%{_docdir}/qt5-doc/qtmultimediawidgets.qch
 %endif
 
 %files examples -f examples.files
+%defattr(644,root,root,755)
+# XXX: dir shared with qt5-qtbase-examples
+%dir %{_examplesdir}/qt5
