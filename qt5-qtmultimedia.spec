@@ -65,10 +65,6 @@ Group:		X11/Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
 Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Network >= %{qtbase_ver}
-Requires:	Qt5OpenGL >= %{qtbase_ver}
-Requires:	Qt5Qml >= %{qtdeclarative_ver}
-Requires:	Qt5Quick >= %{qtdeclarative_ver}
-Requires:	Qt5Widgets >= %{qtbase_ver}
 Obsoletes:	qt5-qtmultimedia
 
 %description -n Qt5Multimedia
@@ -88,8 +84,6 @@ Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Gui-devel >= %{qtbase_ver}
 Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Multimedia = %{version}-%{release}
-Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
-Requires:	Qt5Widgets-devel >= %{qtbase_ver}
 Requires:	pulseaudio-devel
 Obsoletes:	qt5-qtmultimedia-devel
 
@@ -98,6 +92,95 @@ Qt5 Multimedia libraries - development files.
 
 %description -n Qt5Multimedia-devel -l pl.UTF-8
 Biblioteki Qt5 Multimedia - pliki programistyczne.
+
+%package -n Qt5MultimediaQuick
+Summary:	Qt5 Multimedia Quick library and modules
+Summary(pl.UTF-8):	Biblioteka i moduły Qt5 Multimedia Quick
+Group:		X11/Libraries
+Requires:	Qt5Multimedia = %{version}-%{release}
+Requires:	Qt5Qml >= %{qtdeclarative_ver}
+Requires:	Qt5Quick >= %{qtdeclarative_ver}
+
+%description -n Qt5MultimediaQuick
+Qt5 Multimedia Quick library and modules.
+
+%description -n Qt5MultimediaQuick -l pl.UTF-8
+Biblioteka i moduły Qt5 Multimedia Quick.
+
+%package -n Qt5MultimediaQuick-devel
+Summary:	Qt5 Multimedia Quick library - development files
+Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia Quick - pliki programistyczne
+Group:		X11/Development/Libraries
+Requires:	Qt5MultimediaQuick = %{version}-%{release}
+Requires:	Qt5Multimedia-devel = %{version}-%{release}
+Requires:	Qt5Qml-devel >= %{qtdeclarative_ver}
+Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
+
+%description -n Qt5MultimediaQuick-devel
+Qt5 Multimedia Quick library - development files.
+
+%description -n Qt5MultimediaQuick-devel -l pl.UTF-8
+Biblioteka Qt5 Multimedia Quick - pliki programistyczne.
+
+%package -n Qt5MultimediaWidgets
+Summary:	Qt5 Multimedia Widgets library
+Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia Widgets
+Group:		X11/Libraries
+Requires:	Qt5Multimedia = %{version}-%{release}
+Requires:	Qt5OpenGL >= %{qtbase_ver}
+Requires:	Qt5Widgets >= %{qtbase_ver}
+
+%description -n Qt5MultimediaWidgets
+Qt5 Multimedia Widgets library provides widgets classes for Qt5
+Multimedia.
+
+%description -n Qt5MultimediaWidgets -l pl.UTF-8
+Biblioteka Qt5 Multimedia Widgets dostarcza klasy widgetów dla
+biblioteki Qt5 Multimedia.
+
+%package -n Qt5MultimediaWidgets-devel
+Summary:	Qt5 Multimedia Widgets library - development files
+Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia Widgets - pliki programistyczne
+Group:		X11/Development/Libraries
+Requires:	Qt5MultimediaWidgets = %{version}-%{release}
+Requires:	Qt5Multimedia-devel = %{version}-%{release}
+Requires:	Qt5OpenGL-devel >= %{qtbase_ver}
+Requires:	Qt5Widgets-devel >= %{qtbase_ver}
+
+%description -n Qt5MultimediaWidgets-devel
+Qt5 Multimedia Widgets library - development files.
+
+%description -n Qt5MultimediaWidgets-devel -l pl.UTF-8
+Biblioteka Qt5 Multimedia Widgets - pliki programistyczne.
+
+%package -n Qt5Multimedia-gstreamer
+Summary:	Qt5 Multimedia GStreamer components
+Summary(pl.UTF-8):	Komponenty GStreamera biblioteki Qt5 Multimedia
+Group:		X11/Libraries
+Requires:	Qt5MultimediaWidgets = %{version}-%{release}
+
+%description -n Qt5Multimedia-gstreamer
+Qt5 Multimedia GStreamer components (libqgsttools library and modules
+for audio decoding, camera, media capturing and media playing).
+
+%description -n Qt5Multimedia-gstreamer -l pl.UTF-8
+Komponenty GStreamera biblioteki Qt5 Multimedia: biblioteka
+libqgsttools, moduły do dekodowania dźwięku, kamery, przechwytywania
+obrazu i odtwarzania).
+
+%package -n Qt5Multimedia-gstreamer-devel
+Summary:	Qt5 Multimedia GStreamer components - development files
+Summary(pl.UTF-8):	Komponenty GStreamera biblioteki Qt5 Multimedia - pliki programistyczne
+Group:		X11/Development/Libraries
+Requires:	Qt5Multimedia-gstreamer = %{version}-%{release}
+Requires:	Qt5MultimediaWidgets-devel = %{version}-%{release}
+
+%description -n Qt5Multimedia-gstreamer-devel
+Qt5 Multimedia GStreamer components - development files.
+
+%description -n Qt5Multimedia-gstreamer-devel -l pl.UTF-8
+Komponenty GStreamera biblioteki Qt5 Multimedia - pliki
+programistyczne.
 
 %package doc
 Summary:	Qt5 Multimedia documentation in HTML format
@@ -202,31 +285,46 @@ rm -rf $RPM_BUILD_ROOT
 %post	-n Qt5Multimedia -p /sbin/ldconfig
 %postun	-n Qt5Multimedia -p /sbin/ldconfig
 
+%post	-n Qt5MultimediaQuick -p /sbin/ldconfig
+%postun	-n Qt5MultimediaQuick -p /sbin/ldconfig
+
+%post	-n Qt5MultimediaWidgets -p /sbin/ldconfig
+%postun	-n Qt5MultimediaWidgets -p /sbin/ldconfig
+
+%post	-n Qt5Multimedia-gstreamer -p /sbin/ldconfig
+%postun	-n Qt5Multimedia-gstreamer -p /sbin/ldconfig
+
 %files -n Qt5Multimedia
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Multimedia.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Multimedia.so.5
-%attr(755,root,root) %{_libdir}/libQt5MultimediaQuick_p.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaQuick_p.so.5
-%attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaWidgets.so.5
-%attr(755,root,root) %{_libdir}/libqgsttools_p.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libqgsttools_p.so.1
 %dir %{qt5dir}/plugins/audio
 # R: Qt5Core Qt5Multimedia pulseaudio-libs
+# (not splitting as libQt5Multimedia itself is linked with libpulse)
 %attr(755,root,root) %{qt5dir}/plugins/audio/libqtmedia_pulse.so
 %dir %{qt5dir}/plugins/mediaservice
-# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
-%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstaudiodecoder.so
-# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
-%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstcamerabin.so
-# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10
-%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediacapture.so
-# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10
-%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediaplayer.so
 %dir %{qt5dir}/plugins/playlistformats
 # R: Qt5Core Qt5Multimedia
 %attr(755,root,root) %{qt5dir}/plugins/playlistformats/libqtmultimedia_m3u.so
+# common for base -devel and plugin-specific files
+%dir %{_libdir}/cmake/Qt5Multimedia
+
+%files -n Qt5Multimedia-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5Multimedia.so
+%{_libdir}/libQt5Multimedia.prl
+%{_includedir}/qt5/QtMultimedia
+%{_pkgconfigdir}/Qt5Multimedia.pc
+%{_libdir}/cmake/Qt5Multimedia/Qt5MultimediaConfig*.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QM3uPlaylistPlugin.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QPulseAudioPlugin.cmake
+%{qt5dir}/mkspecs/modules/qt_lib_multimedia.pri
+%{qt5dir}/mkspecs/modules/qt_lib_multimedia_private.pri
+
+%files -n Qt5MultimediaQuick
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5MultimediaQuick_p.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaQuick_p.so.5
 %dir %{qt5dir}/qml/QtAudioEngine
 # R: Qt5Core Qt5Gui Qt5Multimedia Qt5Qml OpenAL
 %attr(755,root,root) %{qt5dir}/qml/QtAudioEngine/libdeclarative_audioengine.so
@@ -239,29 +337,50 @@ rm -rf $RPM_BUILD_ROOT
 %{qt5dir}/qml/QtMultimedia/plugins.qmltypes
 %{qt5dir}/qml/QtMultimedia/qmldir
 
-%files -n Qt5Multimedia-devel
+%files -n Qt5MultimediaQuick-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libQt5Multimedia.so
 %attr(755,root,root) %{_libdir}/libQt5MultimediaQuick_p.so
-%attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so
-%attr(755,root,root) %{_libdir}/libqgsttools_p.so
-%{_libdir}/libQt5Multimedia.prl
 %{_libdir}/libQt5MultimediaQuick_p.prl
-%{_libdir}/libQt5MultimediaWidgets.prl
-%{_libdir}/libqgsttools_p.prl
-%{_includedir}/qt5/QtMultimedia
 %{_includedir}/qt5/QtMultimediaQuick_p
-%{_includedir}/qt5/QtMultimediaWidgets
-%{_pkgconfigdir}/Qt5Multimedia.pc
 %{_pkgconfigdir}/Qt5MultimediaQuick_p.pc
+%{qt5dir}/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri
+
+%files -n Qt5MultimediaWidgets
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaWidgets.so.5
+
+%files -n Qt5MultimediaWidgets-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so
+%{_libdir}/libQt5MultimediaWidgets.prl
+%{_includedir}/qt5/QtMultimediaWidgets
 %{_pkgconfigdir}/Qt5MultimediaWidgets.pc
-%{_libdir}/cmake/Qt5Multimedia
 %{_libdir}/cmake/Qt5MultimediaWidgets
-%{qt5dir}/mkspecs/modules/qt_lib_multimedia.pri
-%{qt5dir}/mkspecs/modules/qt_lib_multimedia_private.pri
 %{qt5dir}/mkspecs/modules/qt_lib_multimediawidgets.pri
 %{qt5dir}/mkspecs/modules/qt_lib_multimediawidgets_private.pri
-%{qt5dir}/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri
+
+%files -n Qt5Multimedia-gstreamer
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libqgsttools_p.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqgsttools_p.so.1
+# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstaudiodecoder.so
+# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10 gstreamer0.10-plugins-base
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstcamerabin.so
+# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer0.10
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediacapture.so
+# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer0.10
+%attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediaplayer.so
+
+%files -n Qt5Multimedia-gstreamer-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libqgsttools_p.so
+%{_libdir}/libqgsttools_p.prl
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_CameraBinServicePlugin.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QGstreamerAudioDecoderServicePlugin.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QGstreamerCaptureServicePlugin.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QGstreamerPlayerServicePlugin.cmake
 
 %files doc
 %defattr(644,root,root,755)
