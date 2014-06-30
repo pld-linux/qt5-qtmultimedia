@@ -71,7 +71,7 @@ Obsoletes:	qt5-qtmultimedia
 Qt5 Multimedia libraries provide audio, video, radio and camera
 functionality.
 
-%description -n Qt5Multimedia -l pl.UTF_8
+%description -n Qt5Multimedia -l pl.UTF-8
 Biblioteki Qt5 Multimedia dostarczają funkcjonalność związaną z
 dźwiękiem, obrazem, radiem i kamerą.
 
