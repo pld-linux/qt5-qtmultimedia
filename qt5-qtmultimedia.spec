@@ -331,6 +331,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libQt5Multimedia.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Multimedia.so.5
 %dir %{qt5dir}/plugins/audio
+%attr(755,root,root) %{qt5dir}/plugins/audio/libqtaudio_alsa.so
 # R: Qt5Core Qt5Multimedia pulseaudio-libs
 # (not splitting as libQt5Multimedia itself is linked with libpulse)
 %attr(755,root,root) %{qt5dir}/plugins/audio/libqtmedia_pulse.so
@@ -348,6 +349,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/qt5/QtMultimedia
 %{_pkgconfigdir}/Qt5Multimedia.pc
 %{_libdir}/cmake/Qt5Multimedia/Qt5MultimediaConfig*.cmake
+%{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QAlsaPlugin.cmake
 %{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QM3uPlaylistPlugin.cmake
 %{_libdir}/cmake/Qt5Multimedia/Qt5Multimedia_QPulseAudioPlugin.cmake
 %{qt5dir}/mkspecs/modules/qt_lib_multimedia.pri
