@@ -6,7 +6,7 @@
 %define		orgname		qtmultimedia
 %define		qtbase_ver		%{version}
 %define		qtdeclarative_ver	%{version}
-%define		qttools_ver		%{version}
+%define		qttools_ver		5.4
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
