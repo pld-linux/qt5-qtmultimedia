@@ -10,14 +10,14 @@
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
-Version:	5.5.1
+Version:	5.8.0
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		X11/Libraries
-Source0:	http://download.qt.io/official_releases/qt/5.5/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
-# Source0-md5:	244baff13a02ebc697e5b5e2290088d0
-Source1:	http://download.qt.io/official_releases/qt/5.5/%{version}/submodules/qttranslations-opensource-src-%{version}.tar.xz
-# Source1-md5:	1f89d53fe759db123b4b6d9de9d9e8c9
+Source0:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
+# Source0-md5:	c8610023cfe036d3ad7c13f6e99892cf
+Source1:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/qttranslations-opensource-src-%{version}.tar.xz
+# Source1-md5:	b6c6748a923b9639c7d018cfdb04caf4
 URL:		http://www.qt.io/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
@@ -35,6 +35,7 @@ BuildRequires:	gstreamer-plugins-base-devel >= 1.0
 BuildRequires:	pulseaudio-devel
 %if %{with qch}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
+BuildRequires:	qt5-doc-common >= %{qttools_ver}
 %endif
 BuildRequires:	qt5-build >= %{qtbase_ver}
 %{?with_qm:BuildRequires:	qt5-linguist >= %{qttools_ver}}
@@ -377,7 +378,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libQt5MultimediaQuick_p.so
 %{_libdir}/libQt5MultimediaQuick_p.prl
 %{_includedir}/qt5/QtMultimediaQuick_p
-%{_pkgconfigdir}/Qt5MultimediaQuick_p.pc
 %{qt5dir}/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri
 
 %files -n Qt5MultimediaWidgets
@@ -420,13 +420,11 @@ rm -rf $RPM_BUILD_ROOT
 %files doc
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtmultimedia
-%{_docdir}/qt5-doc/qtmultimediawidgets
 
 %if %{with qch}
 %files doc-qch
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtmultimedia.qch
-%{_docdir}/qt5-doc/qtmultimediawidgets.qch
 %endif
 
 %files examples -f examples.files
