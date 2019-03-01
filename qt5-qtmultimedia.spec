@@ -10,14 +10,14 @@
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
-Version:	5.11.1
+Version:	5.12.1
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		X11/Libraries
-Source0:	http://download.qt.io/official_releases/qt/5.11/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
-# Source0-md5:	c2604625f291f4020798097d2f72042a
-Source1:	http://download.qt.io/official_releases/qt/5.11/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
-# Source1-md5:	67c0dbd61c2b92552b5339d82a94b1a8
+Source0:	http://download.qt.io/official_releases/qt/5.12/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
+# Source0-md5:	b5aa08052c54bc6f04355ad263043c5a
+Source1:	http://download.qt.io/official_releases/qt/5.12/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
+# Source1-md5:	045ad1eda4d3a272b24b6c60a06b313f
 URL:		http://www.qt.io/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
@@ -261,7 +261,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C qttranslations-everywhere-src-%{version} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 # keep only qtmultimedia
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qmlviewer,qt,qtbase,qtconnectivity,qtdeclarative,qtlocation,qtquick1,qtquickcontrols,qtquickcontrols2,qtserialport,qtscript,qtwebengine,qtwebsockets,qtxmlpatterns}_*.qm
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qt,qtbase,qtconnectivity,qtdeclarative,qtlocation,qtquickcontrols,qtquickcontrols2,qtserialport,qtscript,qtwebengine,qtwebsockets,qtxmlpatterns}_*.qm
 %endif
 
 # kill unnecessary -L%{_libdir} from *.la, *.prl, *.pc
