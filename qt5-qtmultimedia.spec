@@ -10,14 +10,14 @@
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
-Version:	5.13.0
+Version:	5.13.1
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		X11/Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.13/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
-# Source0-md5:	77d49ff3158c59bb30a46e578c189a75
+# Source0-md5:	f5be5ed23ab33d1558e3d96dd3561a24
 Source1:	http://download.qt.io/official_releases/qt/5.13/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
-# Source1-md5:	071888e332858a1dfd733e2d264cb284
+# Source1-md5:	8f2e2ce52c296a1bfd814610770663ae
 URL:		http://www.qt.io/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
@@ -378,6 +378,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5MultimediaQuick.so
 %{_libdir}/libQt5MultimediaQuick.prl
+%{_libdir}/cmake/Qt5MultimediaQuick
 %{_includedir}/qt5/QtMultimediaQuick
 %{qt5dir}/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri
 
@@ -400,6 +401,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5MultimediaGstTools.so.*.*.*
 %attr(755,root,root) %{_libdir}/libQt5MultimediaGstTools.so.5
+%{_libdir}/cmake/Qt5MultimediaGstTools
 # R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer gstreamer-plugins-base
 %attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstaudiodecoder.so
 # R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer gstreamer-plugins-base
