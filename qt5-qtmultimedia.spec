@@ -10,14 +10,14 @@
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
-Version:	5.13.1
+Version:	5.13.2
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		X11/Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.13/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
-# Source0-md5:	f5be5ed23ab33d1558e3d96dd3561a24
+# Source0-md5:	97fd171fe34c14d27c9b5015604fa4f4
 Source1:	http://download.qt.io/official_releases/qt/5.13/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
-# Source1-md5:	8f2e2ce52c296a1bfd814610770663ae
+# Source1-md5:	fea07dab5b04fe170fc06987f4fd0b0f
 URL:		http://www.qt.io/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
