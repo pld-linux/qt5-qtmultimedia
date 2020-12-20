@@ -28,10 +28,11 @@ BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Widgets-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Xml-devel >= %{qtbase_ver}
-BuildRequires:	alsa-lib-devel
+BuildRequires:	alsa-lib-devel >= 1.0.10
 BuildRequires:	gstreamer-devel >= 1.0
+BuildRequires:	gstreamer-gl-devel >= 1.0
 BuildRequires:	gstreamer-plugins-base-devel >= 1.0
-BuildRequires:	pulseaudio-devel
+BuildRequires:	pulseaudio-devel >= 0.9.11
 %if %{with doc}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
 BuildRequires:	qt5-doc-common >= %{qttools_ver}
@@ -69,6 +70,8 @@ Group:		X11/Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
 Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Network >= %{qtbase_ver}
+Requires:	alsa-lib >= 1.0.10
+Requires:	pulseaudio-libs >= 0.9.11
 Obsoletes:	qt5-qtmultimedia < 5.2.0-1
 
 %description -n Qt5Multimedia
@@ -102,7 +105,7 @@ Group:		X11/Libraries
 Requires:	Qt5Multimedia = %{version}-%{release}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
-Requires:	pulseaudio-devel
+Requires:	pulseaudio-devel >= 0.9.11
 
 %description -n Qt5MultimediaQuick
 Qt5 Multimedia Quick library and modules.
@@ -175,11 +178,11 @@ Summary(pl.UTF-8):	Komponenty GStreamera biblioteki Qt5 Multimedia - pliki progr
 Group:		X11/Development/Libraries
 Requires:	Qt5Multimedia-gstreamer = %{version}-%{release}
 Requires:	Qt5MultimediaWidgets-devel = %{version}-%{release}
-Requires:	alsa-lib-devel
+Requires:	alsa-lib-devel >= 1.0.10
 Requires:	gstreamer-devel
 Requires:	gstreamer-gl-devel
 Requires:	gstreamer-plugins-base-devel
-Requires:	pulseaudio-devel
+Requires:	pulseaudio-devel >= 0.9.11
 
 %description -n Qt5Multimedia-gstreamer-devel
 Qt5 Multimedia GStreamer components - development files.
