@@ -6,25 +6,24 @@
 %define		orgname		qtmultimedia
 %define		qtbase_ver		%{version}
 %define		qtdeclarative_ver	%{version}
-%define		qttools_ver		5.4
+%define		qttools_ver		5.9
 Summary:	The Qt5 Multimedia libraries
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia
 Name:		qt5-%{orgname}
 Version:	5.15.2
 Release:	2
-License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
+License:	LGPL v3 or GPL v2 or GPL v3 or commercial
 Group:		X11/Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
 # Source0-md5:	591e3c3322742eaf76bc6f91dce59e42
 Source1:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
 # Source1-md5:	9b66cdb64402e8fd9e843f8a7120abb1
-URL:		http://www.qt.io/
+URL:		https://www.qt.io/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
 BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Gui-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
-BuildRequires:	Qt5OpenGL-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Widgets-devel >= %{qtbase_ver}
@@ -84,12 +83,10 @@ dźwiękiem, obrazem, radiem i kamerą.
 Summary:	Qt5 Multimedia libraries - development files
 Summary(pl.UTF-8):	Biblioteki Qt5 Multimedia - pliki programistyczne
 Group:		X11/Development/Libraries
-Requires:	OpenGL-devel
 Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Gui-devel >= %{qtbase_ver}
 Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Multimedia = %{version}-%{release}
-Requires:	pulseaudio-devel
 Obsoletes:	qt5-qtmultimedia-devel
 
 %description -n Qt5Multimedia-devel
@@ -105,6 +102,7 @@ Group:		X11/Libraries
 Requires:	Qt5Multimedia = %{version}-%{release}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
+Requires:	pulseaudio-devel
 
 %description -n Qt5MultimediaQuick
 Qt5 Multimedia Quick library and modules.
@@ -132,7 +130,6 @@ Summary:	Qt5 Multimedia Widgets library
 Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia Widgets
 Group:		X11/Libraries
 Requires:	Qt5Multimedia = %{version}-%{release}
-Requires:	Qt5OpenGL >= %{qtbase_ver}
 Requires:	Qt5Widgets >= %{qtbase_ver}
 
 %description -n Qt5MultimediaWidgets
@@ -149,7 +146,6 @@ Summary(pl.UTF-8):	Biblioteka Qt5 Multimedia Widgets - pliki programistyczne
 Group:		X11/Development/Libraries
 Requires:	Qt5MultimediaWidgets = %{version}-%{release}
 Requires:	Qt5Multimedia-devel = %{version}-%{release}
-Requires:	Qt5OpenGL-devel >= %{qtbase_ver}
 Requires:	Qt5Widgets-devel >= %{qtbase_ver}
 
 %description -n Qt5MultimediaWidgets-devel
@@ -179,6 +175,11 @@ Summary(pl.UTF-8):	Komponenty GStreamera biblioteki Qt5 Multimedia - pliki progr
 Group:		X11/Development/Libraries
 Requires:	Qt5Multimedia-gstreamer = %{version}-%{release}
 Requires:	Qt5MultimediaWidgets-devel = %{version}-%{release}
+Requires:	alsa-lib-devel
+Requires:	gstreamer-devel
+Requires:	gstreamer-gl-devel
+Requires:	gstreamer-plugins-base-devel
+Requires:	pulseaudio-devel
 
 %description -n Qt5Multimedia-gstreamer-devel
 Qt5 Multimedia GStreamer components - development files.
@@ -192,9 +193,7 @@ Summary:	Qt5 Multimedia documentation in HTML format
 Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Multimedia w formacie HTML
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description doc
 Qt5 Multimedia documentation in HTML format.
@@ -207,9 +206,7 @@ Summary:	Qt5 Multimedia documentation in QCH format
 Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Multimedia w formacie QCH
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description doc-qch
 Qt5 Multimedia documentation in QCH format.
@@ -221,9 +218,7 @@ Dokumentacja do bibliotek Qt5 Multimedia w formacie QCH.
 Summary:	Qt5 Multimedia examples
 Summary(pl.UTF-8):	Przykłady do bibliotek Qt5 Multimedia
 Group:		X11/Development/Libraries
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description examples
 Qt5 Multimedia examples.
@@ -249,6 +244,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
@@ -331,16 +327,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5Multimedia -f qtmultimedia.lang
 %defattr(644,root,root,755)
+%doc LICENSE.GPL3-EXCEPT dist/changes-*
+# R: Qt5Core Qt5Gui Qt5Network pulseaudio-libs
 %attr(755,root,root) %{_libdir}/libQt5Multimedia.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Multimedia.so.5
 %dir %{qt5dir}/plugins/audio
+# R: Qt5Core Qt5Multimedia alsa-lib
 %attr(755,root,root) %{qt5dir}/plugins/audio/libqtaudio_alsa.so
 # R: Qt5Core Qt5Multimedia pulseaudio-libs
 # (not splitting as libQt5Multimedia itself is linked with libpulse)
 %attr(755,root,root) %{qt5dir}/plugins/audio/libqtmedia_pulse.so
 %dir %{qt5dir}/plugins/mediaservice
 %dir %{qt5dir}/plugins/playlistformats
-# R: Qt5Core Qt5Multimedia
+# R: Qt5Core Qt5Multimedia Qt5Network
 %attr(755,root,root) %{qt5dir}/plugins/playlistformats/libqtmultimedia_m3u.so
 # common for base -devel and plugin-specific files
 %dir %{_libdir}/cmake/Qt5Multimedia
@@ -360,6 +359,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5MultimediaQuick
 %defattr(644,root,root,755)
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5Quick
 %attr(755,root,root) %{_libdir}/libQt5MultimediaQuick.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaQuick.so.5
 %dir %{qt5dir}/qml/QtAudioEngine
@@ -368,7 +368,7 @@ rm -rf $RPM_BUILD_ROOT
 %{qt5dir}/qml/QtAudioEngine/plugins.qmltypes
 %{qt5dir}/qml/QtAudioEngine/qmldir
 %dir %{qt5dir}/qml/QtMultimedia
-# R: Qt5Core Qt5Gui Qt5Multimedia[+libQt5MultimediaQuick] Qt5Qml Qt5Quick
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5MultimediaQuick Qt5Network Qt5Qml Qt5Quick
 %attr(755,root,root) %{qt5dir}/qml/QtMultimedia/libdeclarative_multimedia.so
 %{qt5dir}/qml/QtMultimedia/Video.qml
 %{qt5dir}/qml/QtMultimedia/plugins.qmltypes
@@ -384,6 +384,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5MultimediaWidgets
 %defattr(644,root,root,755)
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5Widgets OpenGL
 %attr(755,root,root) %{_libdir}/libQt5MultimediaWidgets.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaWidgets.so.5
 
@@ -399,16 +400,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5Multimedia-gstreamer
 %defattr(644,root,root,755)
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5MultimediaWidgets Qt5Network Qt5Widgets alsa-lib glib2 gstreamer gstreamer-gl gstreamer-plugins-base
 %attr(755,root,root) %{_libdir}/libQt5MultimediaGstTools.so.*.*.*
-%attr(755,root,root) %{_libdir}/libQt5MultimediaGstTools.so.5
+%attr(755,root,root) %ghost %{_libdir}/libQt5MultimediaGstTools.so.5
 %{_libdir}/cmake/Qt5MultimediaGstTools
-# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer gstreamer-plugins-base
+# R: Qt5Core Qt5Multimedia Qt5MultimediaGstTools glib2 gstreamer gstreamer-plugins-base
 %attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstaudiodecoder.so
-# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer gstreamer-plugins-base
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5MultimediaGstTools glib2 gstreamer gstreamer-plugins-base
 %attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstcamerabin.so
-# R: Qt5Core Qt5Gui Qt5Multimedia[+libqgsttools_p] gstreamer
+# R: Qt5Core Qt5Gui Qt5Multimedia Qt5MultimediaGstTools glib2 gstreamer gstreamer-plugins-base
 %attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediacapture.so
-# R: Qt5Core Qt5Multimedia[+libqgsttools_p] gstreamer
+# R: Qt5Core Qt5Multimedia Qt5MultimediaGstTools gstreamer
 %attr(755,root,root) %{qt5dir}/plugins/mediaservice/libgstmediaplayer.so
 
 %files -n Qt5Multimedia-gstreamer-devel
