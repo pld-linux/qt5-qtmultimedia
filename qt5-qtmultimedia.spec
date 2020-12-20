@@ -69,7 +69,7 @@ Group:		X11/Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
 Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Network >= %{qtbase_ver}
-Obsoletes:	qt5-qtmultimedia
+Obsoletes:	qt5-qtmultimedia < 5.2.0-1
 
 %description -n Qt5Multimedia
 Qt5 Multimedia libraries provide audio, video, radio and camera
@@ -87,7 +87,7 @@ Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Gui-devel >= %{qtbase_ver}
 Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Multimedia = %{version}-%{release}
-Obsoletes:	qt5-qtmultimedia-devel
+Obsoletes:	qt5-qtmultimedia-devel < 5.2.0-1
 
 %description -n Qt5Multimedia-devel
 Qt5 Multimedia libraries - development files.
